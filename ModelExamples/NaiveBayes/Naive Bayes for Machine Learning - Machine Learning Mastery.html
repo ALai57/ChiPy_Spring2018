@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)https://machinelearningmastery.com/naive-bayes-for-machine-learning/ -->
+<html lang="en-US" prefix="og: http://ogp.me/ns#" style="" class=" js csstransforms3d csstransitions"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/form"></script><script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/form(1)"></script><script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/form(2)"></script><script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/form(3)"></script><script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/form(4)"></script><script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/form(5)"></script><script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/form(6)"></script><script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/track"></script>
+
+<title>Naive Bayes for Machine Learning - Machine Learning Mastery</title>
+
+<link rel="pingback" href="https://machinelearningmastery.com/xmlrpc.php">
+
+<!--  Mobile viewport scale -->
+<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" name="viewport">
+
+<!-- This site is optimized with the Yoast SEO plugin v6.3.1 - https://yoast.com/wordpress/plugins/seo/ -->
+<link rel="canonical" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/">
+<link rel="publisher" href="https://plus.google.com/u/0/b/117073416089354242117/+MachinelearningmasteryHome/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Naive Bayes for Machine Learning - Machine Learning Mastery">
+<meta property="og:description" content="Naive Bayes is a simple but surprisingly powerful algorithm for predictive modeling. In this post you will discover the Naive Bayes algorithm for classification. After reading this post, you will know: The representation used by naive Bayes that is actually stored when a model is written to a file. How a learned model can be …">
+<meta property="og:url" content="https://machinelearningmastery.com/naive-bayes-for-machine-learning/">
+<meta property="og:site_name" content="Machine Learning Mastery">
+<meta property="article:publisher" content="https://www.facebook.com/Machine-Learning-Mastery-1429846323896563/">
+<meta property="article:author" content="https://www.facebook.com/jason.brownlee.39">
+<meta property="article:section" content="Machine Learning Algorithms">
+<meta property="article:published_time" content="2016-04-11T05:00:42+11:00">
+<meta property="article:modified_time" content="2016-09-22T10:57:29+11:00">
+<meta property="og:updated_time" content="2016-09-22T10:57:29+11:00">
+<meta property="og:image" content="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2016/03/Naive-Bayes-for-Machine-Learning.jpg">
+<meta property="og:image:secure_url" content="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2016/03/Naive-Bayes-for-Machine-Learning.jpg">
+<meta property="og:image:width" content="640">
+<meta property="og:image:height" content="426">
+<script type="text/javascript" async="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/9556588.js.download"></script><script src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/296263687421164" async=""></script><script async="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/fbevents.js.download"></script><script async="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/analytics.js.download"></script><script type="application/ld+json">{"@context":"http:\/\/schema.org","@type":"WebSite","@id":"#website","url":"https:\/\/machinelearningmastery.com\/","name":"Machine Learning Mastery","potentialAction":{"@type":"SearchAction","target":"https:\/\/machinelearningmastery.com\/?s={search_term_string}","query-input":"required name=search_term_string"}}</script>
+<script type="application/ld+json">{"@context":"http:\/\/schema.org","@type":"Organization","url":"https:\/\/machinelearningmastery.com\/naive-bayes-for-machine-learning\/","sameAs":["https:\/\/www.facebook.com\/Machine-Learning-Mastery-1429846323896563\/","https:\/\/www.linkedin.com\/in\/jasonbrownlee","https:\/\/plus.google.com\/u\/0\/b\/117073416089354242117\/+MachinelearningmasteryHome\/","https:\/\/twitter.com\/TeachTheMachine"],"@id":"#organization","name":"Machine Learning Mastery","logo":"https:\/\/machinelearningmastery.com\/wp-content\/uploads\/2016\/09\/cropped-icon.png"}</script>
+<!-- / Yoast SEO plugin. -->
+
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Machine Learning Mastery » Feed" href="https://feeds.feedburner.com/MachineLearningMastery">
+<link rel="alternate" type="application/rss+xml" title="Machine Learning Mastery » Comments Feed" href="https://machinelearningmastery.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Machine Learning Mastery » Naive Bayes for Machine Learning Comments Feed" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/machinelearningmastery.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.4"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56692,8205,9792,65039],[55357,56692,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/wp-emoji-release.min.js.download" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="crayon-css" href="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/crayon.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="contact-form-7-css" href="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/styles.css" type="text/css" media="all">
+<link rel="stylesheet" id="apss-font-awesome-css" href="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/font-awesome.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="apss-font-opensans-css" href="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="apss-frontend-css-css" href="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/frontend.css" type="text/css" media="all">
+<link rel="stylesheet" id="woo-testimonials-css-css" href="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/testimonials.css" type="text/css" media="all">
+<link rel="stylesheet" id="theme-stylesheet-css" href="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/style.css" type="text/css" media="all">
+<!--[if lt IE 9]>
+<link href="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/themes/canvas-new/css/non-responsive.css" rel="stylesheet" type="text/css" />
+<style type="text/css">.col-full, #wrapper { width: 960px; max-width: 960px; } #inner-wrapper { padding: 0; } body.full-width #header, #nav-container, body.full-width #content, body.full-width #footer-widgets, body.full-width #footer { padding-left: 0; padding-right: 0; } body.fixed-mobile #top, body.fixed-mobile #header-container, body.fixed-mobile #footer-container, body.fixed-mobile #nav-container, body.fixed-mobile #footer-widgets-container { min-width: 960px; padding: 0 1em; } body.full-width #content { width: auto; padding: 0 1em;}</style>
+<![endif]-->
+<script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/jquery.js.download"></script>
+<script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/jquery-migrate.min.js.download"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"https:\/\/machinelearningmastery.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/crayon.min.js.download"></script>
+<script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/third-party.min.js.download"></script>
+<script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/modernizr.min.js.download"></script>
+<script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/general.min.js.download"></script>
+<link rel="https://api.w.org/" href="https://machinelearningmastery.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://machinelearningmastery.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-includes/wlwmanifest.xml"> 
+<link rel="shortlink" href="https://machinelearningmastery.com/?p=2305">
+<link rel="alternate" type="application/json+oembed" href="https://machinelearningmastery.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fmachinelearningmastery.com%2Fnaive-bayes-for-machine-learning%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://machinelearningmastery.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fmachinelearningmastery.com%2Fnaive-bayes-for-machine-learning%2F&amp;format=xml">
+<!-- Start Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44039733-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '296263687421164');
+fbq('track', "PageView");</script>
+<noscript>&lt;img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=296263687421164&amp;ev=PageView&amp;noscript=1"
+/&gt;</noscript>
+<!-- End Facebook Pixel Code -->
+
+<!-- Custom CSS Styling -->
+<style type="text/css">
+#logo .site-title, #logo .site-description { display:none; }
+body {background-repeat:no-repeat;background-position:top left;background-attachment:scroll;border-top:0px solid #000000;}
+#header {background-repeat:no-repeat;background-position:left top;margin-top:0px;margin-bottom:0px;padding-top:10px;padding-bottom:10px;border:0px solid ;}
+#logo .site-title a {font:bold 40px/1em Helvetica Neue, Helvetica, sans-serif;color:#222222;}
+#logo .site-description {font:300 13px/1em Helvetica Neue, Helvetica, sans-serif;color:#999999;}
+body, p { font:300 14px/1.5em Helvetica Neue, Helvetica, sans-serif;color:#555555; }
+h1 { font:bold 28px/1.2em Helvetica Neue, Helvetica, sans-serif;color:#222222; }h2 { font:bold 24px/1.2em Helvetica Neue, Helvetica, sans-serif;color:#222222; }h3 { font:bold 20px/1.2em Helvetica Neue, Helvetica, sans-serif;color:#222222; }h4 { font:bold 16px/1.2em Helvetica Neue, Helvetica, sans-serif;color:#222222; }h5 { font:bold 14px/1.2em Helvetica Neue, Helvetica, sans-serif;color:#222222; }h6 { font:bold 12px/1.2em Helvetica Neue, Helvetica, sans-serif;color:#222222; }
+.page-title, .post .title, .page .title {font:bold 28px/1.1em "Helvetica Neue", Helvetica, sans-serif;color:#222222;}
+.post .title a:link, .post .title a:visited, .page .title a:link, .page .title a:visited {color:#222222}
+.post-meta { font:300 12px/1.5em "Helvetica Neue", Helvetica, sans-serif;color:#999999; }
+.entry, .entry p{ font:300 15px/1.5em "Helvetica Neue", Helvetica, sans-serif;color:#555555; }
+.post-more {font:300 13px/1.5em "Helvetica Neue", Helvetica, sans-serif;color:;border-top:0px solid #e6e6e6;border-bottom:0px solid #e6e6e6;}
+#post-author, #connect {border-top:1px solid #e6e6e6;border-bottom:1px solid #e6e6e6;border-left:1px solid #e6e6e6;border-right:1px solid #e6e6e6;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#fafafa}
+.nav-entries a, .woo-pagination { font:300 13px/1em "Helvetica Neue", Helvetica, sans-serif;color:#888; }
+.woo-pagination a, .woo-pagination a:hover {color:#888!important}
+.widget h3 {font:bold 14px/1.2em &quot;Helvetica Neue&quot;, Helvetica, sans-serif;color:#555555;border-bottom:1px solid #e6e6e6;}
+.widget_recent_comments li, #twitter li { border-color: #e6e6e6;}
+.widget p, .widget .textwidget { font:300 13px/1.5em Helvetica Neue, Helvetica, sans-serif;color:#555555; }
+.widget {font:300 13px/1.5em &quot;Helvetica Neue&quot;, Helvetica, sans-serif;color:#555555;border-radius:0px;-moz-border-radius:0px;-webkit-border-radius:0px;}
+#tabs .inside li a, .widget_woodojo_tabs .tabbable .tab-pane li a { font:bold 12px/1.5em Helvetica Neue, Helvetica, sans-serif;color:#555555; }
+#tabs .inside li span.meta, .widget_woodojo_tabs .tabbable .tab-pane li span.meta { font:300 11px/1.5em Helvetica Neue, Helvetica, sans-serif;color:#999999; }
+#tabs ul.wooTabs li a, .widget_woodojo_tabs .tabbable .nav-tabs li a { font:300 11px/2em Helvetica Neue, Helvetica, sans-serif;color:#999999; }
+@media only screen and (min-width:768px) {
+ul.nav li a, #navigation ul.rss a, #navigation ul.cart a.cart-contents, #navigation .cart-contents #navigation ul.rss, #navigation ul.nav-search, #navigation ul.nav-search a { font:300 14px/1.2em Helvetica Neue, Helvetica, sans-serif;color:#666666; } #navigation ul.rss li a:before, #navigation ul.nav-search a.search-contents:before { color:#666666;}
+#navigation ul.nav li ul, #navigation ul.cart > li > ul > div  { border: 0px solid #dbdbdb; }
+#navigation ul.nav > li:hover > ul  { left: 0; }
+#navigation ul.nav > li  { border-right: 0px solid #dbdbdb; }#navigation ul.nav > li:hover > ul  { left: 0; }
+#navigation { box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none; }#navigation ul li:first-child, #navigation ul li:first-child a { border-radius:0px 0 0 0px; -moz-border-radius:0px 0 0 0px; -webkit-border-radius:0px 0 0 0px; }
+#navigation {border-top:0px solid #dbdbdb;border-bottom:0px solid #dbdbdb;border-left:0px solid #dbdbdb;border-right:0px solid #dbdbdb;border-radius:0px; -moz-border-radius:0px; -webkit-border-radius:0px;}
+#top ul.nav li a { font:300 12px/1.6em Helvetica Neue, Helvetica, sans-serif;color:#ddd; }
+}
+#footer, #footer p { font:300 13px/1.4em Helvetica Neue, Helvetica, sans-serif;color:#999999; }
+#footer {border-top:1px solid #dbdbdb;border-bottom:0px solid ;border-left:0px solid ;border-right:0px solid ;border-radius:0px; -moz-border-radius:0px; -webkit-border-radius:0px;}
+.magazine #loopedSlider .content h2.title a { font:bold 24px/1em Arial, sans-serif;color:#ffffff; }
+.wooslider-theme-magazine .slide-title a { font:bold 24px/1em Arial, sans-serif;color:#ffffff; }
+.magazine #loopedSlider .content .excerpt p { font:300 13px/1.5em Arial, sans-serif;color:#cccccc; }
+.wooslider-theme-magazine .slide-content p, .wooslider-theme-magazine .slide-excerpt p { font:300 13px/1.5em Arial, sans-serif;color:#cccccc; }
+.magazine .block .post .title a {font:bold 18px/1.2em Helvetica Neue, Helvetica, sans-serif;color:#222222; }
+#loopedSlider.business-slider .content h2 { font:bold 24px/1em Arial, sans-serif;color:#ffffff; }
+#loopedSlider.business-slider .content h2.title a { font:bold 24px/1em Arial, sans-serif;color:#ffffff; }
+.wooslider-theme-business .has-featured-image .slide-title { font:bold 24px/1em Arial, sans-serif;color:#ffffff; }
+.wooslider-theme-business .has-featured-image .slide-title a { font:bold 24px/1em Arial, sans-serif;color:#ffffff; }
+#wrapper #loopedSlider.business-slider .content p { font:300 13px/1.5em Arial, sans-serif;color:#cccccc; }
+.wooslider-theme-business .has-featured-image .slide-content p { font:300 13px/1.5em Arial, sans-serif;color:#cccccc; }
+.wooslider-theme-business .has-featured-image .slide-excerpt p { font:300 13px/1.5em Arial, sans-serif;color:#cccccc; }
+.archive_header { font:bold 18px/1em Arial, sans-serif;color:#222222; }
+.archive_header {border-bottom:1px solid #e6e6e6;}
+.archive_header .catrss { display:none; }
+</style>
+
+<!-- Woo Shortcodes CSS -->
+<link href="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/shortcodes.css" rel="stylesheet" type="text/css">
+
+<!-- Custom Stylesheet -->
+<link href="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/custom.css" rel="stylesheet" type="text/css">
+
+<!-- Theme version -->
+<meta name="generator" content="Canvas 5.9.21">
+<meta name="generator" content="WooFramework 6.2.9">
+<link rel="icon" href="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2016/09/cropped-icon-32x32.png" sizes="32x32">
+<link rel="icon" href="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2016/09/cropped-icon-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon-precomposed" href="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2016/09/cropped-icon-180x180.png">
+<meta name="msapplication-TileImage" content="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2016/09/cropped-icon-270x270.png">
+<style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style><style type="text/css">
+  /* === Form-Specific Styles === */
+
+  #drip-2211 .drip-content,
+  #drip-2211 .drip-header {
+    background: rgb(9,123,156) !important;
+    background: rgba(9,123,156,0.90) !important;
+  }
+
+  #drip-2211 .drip-content h3 {
+    color: #333333 !important;
+    font-size: 21px !important;
+  }
+
+  #drip-2211 .drip-submit-button {
+    background-color: #333333 !important;
+    font-size: 12px !important;
+  }
+
+  #drip-2211 .drip-submit-button:hover {
+    background-color: #191919 !important;
+  }
+
+  #drip-2211 .drip-submit-button:active {
+    background-color: #000000 !important;
+  }
+
+  #drip-2211 dl dt,
+  #drip-2211 .drip-content .drip-description,
+  #drip-2211 .drip-errors {
+    font-size: 13px !important;
+  }
+
+  #drip-2211 .drip-text-field {
+    font-size: 14px !important;
+  }
+
+  /* === Reset styles === */
+
+  .drip-tab h1,
+  .drip-tab h2,
+  .drip-tab h3,
+  .drip-tab div,
+  .drip-tab dl,
+  .drip-tab dt,
+  .drip-tab dd,
+  .drip-tab p,
+  .drip-tab a,
+  .drip-tab .drip-text-field,
+  .drip-tab .drip-text-field:focus,
+  .drip-tab .drip-submit-button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    float: none;
+    width: auto;
+    background-image: none;
+    letter-spacing: 0;
+    -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+            box-shadow: none;
+    -webkit-text-shadow: none !important;
+       -moz-text-shadow: none !important;
+            text-shadow: none !important;
+  }
+
+  .drip-tab a {
+    text-decoration: none;
+  }
+
+  .drip-tab :focus {
+    outline: 0;
+  }
+
+  /* === Clearfix === */
+
+  .drip-clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+  * html .drip-clearfix             { zoom: 1; } /* IE6 */
+  *:first-child+html .drip-clearfix { zoom: 1; } /* IE7 */
+
+  /* === Main Container === */
+
+  .drip-tab-container * {
+    box-sizing: content-box;
+  }
+
+  /* === Content === */
+
+  .drip-tab .drip-content {
+    margin: 0;
+    padding: 5px;
+    width: 330px;
+    position: fixed;
+    font-size: 100%;
+    font: inherit;
+    z-index: 10000;
+    color: #333;
+    vertical-align: baseline;
+    text-align: left;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0px 0px 20px rgba(0,0,0,0.25);
+       -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.25);
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.25);
+  }
+
+  .drip-tab.bottom .drip-content {
+    bottom: -800px;
+    -webkit-border-radius: 8px 8px 0 0;
+       -moz-border-radius: 8px 8px 0 0;
+            border-radius: 8px 8px 0 0;
+    -webkit-transition: bottom 200ms ease-in;
+       -moz-transition: bottom 200ms ease-in;
+         -o-transition: bottom 200ms ease-in;
+            transition: bottom 200ms ease-in;
+  }
+
+  .drip-tab.bottom.left .drip-content {
+    left: 40px;
+  }
+
+  .drip-tab.bottom.right .drip-content {
+    right: 40px;
+  }
+
+  .drip-tab.image-left .drip-content,
+  .drip-tab.image-right .drip-content {
+    width: 510px;
+  }
+
+  .drip-tab.side .drip-content {
+    top: 10%;
+  }
+
+  .drip-tab.side.right .drip-content {
+    right: -550px;
+    -webkit-border-radius: 8px 0 0 8px;
+       -moz-border-radius: 8px 0 0 8px;
+            border-radius: 8px 0 0 8px;
+    -webkit-transition: right 200ms ease-in;
+       -moz-transition: right 200ms ease-in;
+         -o-transition: right 200ms ease-in;
+            transition: right 200ms ease-in;
+  }
+
+  .drip-tab.side.left .drip-content {
+    left: -550px;
+    -webkit-border-radius: 0 8px 8px 0;
+       -moz-border-radius: 0 8px 8px 0;
+            border-radius: 0 8px 8px 0;
+    -webkit-transition: left 200ms ease-in;
+       -moz-transition: left 200ms ease-in;
+         -o-transition: left 200ms ease-in;
+            transition: left 200ms ease-in;
+  }
+
+  .drip-tab.mobile .drip-content {
+    width: 100% !important;
+    bottom: -800px;
+    left: 0;
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+    -webkit-transition: bottom 200ms ease-in;
+       -moz-transition: bottom 200ms ease-in;
+         -o-transition: bottom 200ms ease-in;
+            transition: bottom 200ms ease-in;
+  }
+
+  .drip-tab.drip-scrollable .drip-content {
+    overflow-y: scroll;
+  }
+
+  /* === Header === */
+
+  .drip-tab .drip-header {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    font-size: 100%;
+    font: inherit;
+    z-index: 10000;
+    color: #333;
+    vertical-align: baseline;
+    text-align: left;
+    -webkit-border-radius: 8px 8px 0 0;
+       -moz-border-radius: 8px 8px 0 0;
+            border-radius: 8px 8px 0 0;
+    -webkit-box-shadow: 0px 10px 28px rgba(0,0,0,0.36);
+       -moz-box-shadow: 0px 10px 28px rgba(0,0,0,0.36);
+            box-shadow: 0px 10px 28px rgba(0,0,0,0.36);
+  }
+
+  .drip-tab.bottom .drip-header {
+    width: 330px;
+    bottom: 0;
+    -webkit-transition: bottom 200ms ease-in;
+       -moz-transition: bottom 200ms ease-in;
+         -o-transition: bottom 200ms ease-in;
+            transition: bottom 200ms ease-in;
+  }
+
+  .drip-tab.bottom .drip-header.drip-hidden {
+    bottom: -800px;
+  }
+
+  .drip-tab.bottom.left .drip-header {
+    left: 40px;
+  }
+
+  .drip-tab.bottom.right .drip-header {
+    right: 40px;
+  }
+
+  .drip-tab.bottom.image-left .drip-header,
+  .drip-tab.bottom.image-right .drip-header {
+    width: 510px;
+  }
+
+  .drip-tab.side .drip-header {
+    width: 330px;
+    top: 10%;
+  }
+
+  .drip-tab.side.right .drip-header {
+    right: -100px;
+    -webkit-transition: right 400ms ease-in;
+       -moz-transition: right 400ms ease-in;
+         -o-transition: right 400ms ease-in;
+            transition: right 400ms ease-in;
+    -webkit-transform: rotate(-90deg) !important;
+       -moz-transform: rotate(-90deg) !important;
+        -ms-transform: rotate(-90deg) !important;
+         -o-transform: rotate(-90deg) !important;
+            transform: rotate(-90deg) !important;
+    -webkit-transform-origin: right center;
+       -moz-transform-origin: right center;
+         -o-transform-origin: right center;
+            transform-origin: right center;
+  }
+
+  .drip-tab.side.right .drip-header.drip-hidden {
+    right: -100px;
+  }
+
+  .drip-tab.side.left .drip-header {
+    left: -100px;
+    -webkit-transition: left 400ms ease-in;
+       -moz-transition: left 400ms ease-in;
+         -o-transition: left 400ms ease-in;
+            transition: left 400ms ease-in;
+    -webkit-transform: rotate(90deg) !important;
+       -moz-transform: rotate(90deg) !important;
+        -ms-transform: rotate(90deg) !important;
+         -o-transform: rotate(90deg) !important;
+            transform: rotate(90deg) !important;
+    -webkit-transform-origin: left center;
+       -moz-transform-origin: left center;
+         -o-transform-origin: left center;
+            transform-origin: left center;
+  }
+
+  .drip-tab.side.left .drip-header.drip-hidden {
+    left: -100px;
+  }
+
+  .drip-tab.mobile .drip-header {
+    width: 100% !important;
+    bottom: 0;
+    left: 0;
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+    -webkit-transition: bottom 200ms ease-in;
+       -moz-transition: bottom 200ms ease-in;
+         -o-transition: bottom 200ms ease-in;
+            transition: bottom 200ms ease-in;
+  }
+
+  .drip-tab.mobile .drip-header.drip-hidden {
+    bottom: -300px;
+  }
+
+  /* === Header Toggle === */
+
+  .drip-tab .drip-toggle {
+    display: block;
+    text-decoration: none;
+    padding: 10px 50px 10px 20px; /* extra padding for the arrow */
+  }
+
+  /* === Teaser === */
+
+  .drip-tab .drip-header h2 {
+    display: block;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    color: #fff !important;
+    clear: none !important;
+    letter-spacing: 0 !important;
+    width: auto !important;
+  }
+
+  /* === Arrows === */
+
+  .drip-tab .drip-header span.drip-arrow {
+    display: block;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: 0;
+    height: 0;
+    line-height: 0;
+    top: 17px;
+    right: 32px;
+  }
+
+  /* === Panel === */
+
+  .drip-tab .drip-content > div.drip-panel {
+    padding: 15px;
+    background-color: #fff;
+    -webkit-border-radius: 6px;
+       -moz-border-radius: 6px;
+            border-radius: 6px;
+  }
+
+  /* === Powered By === */
+
+  .drip-tab .drip-powered-by {
+    padding: 8px;
+    margin-bottom: -5px;
+    font-family: Helvetica, Arial, sans-serif;
+    text-align: left;
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 16px;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-align: center;
+    text-transform: uppercase;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .drip-tab .drip-powered-by a {
+    color: #ffffff !important;
+    text-decoration: underline !important;
+    letter-spacing: 1px;
+    margin-left: 6px;
+  }
+
+  /* === Content Headings & Paragraphs === */
+
+  .drip-tab .drip-content h3 {
+    display: block;
+    margin: 0 20px 0 0 !important;
+    padding: 0 0 15px 0 !important;
+    line-height: 1.4 !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    color: #4477bd !important;
+    clear: none !important;
+  }
+
+  .drip-tab .drip-content .drip-description {
+    margin: 0;
+    padding: 0 0 20px 0;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .drip-tab.image-left .drip-content .drip-description {
+    margin-left: 170px;
+  }
+
+  .drip-tab.image-right .drip-content .drip-description {
+    margin-right: 170px;
+  }
+
+  @media screen and (max-width: 510px) {
+    .drip-tab.image-left .drip-content .drip-description {
+      margin-left: 0; /* 120px; */
+    }
+
+    .drip-tab.image-right .drip-content .drip-description {
+      margin-right: 0; /* 120px; */
+    }
+  }
+
+  .drip-tab .drip-content .drip-description a {
+    text-decoration: underline;
+  }
+
+  .drip-tab .drip-content .drip-description em {
+    font-style: italic;
+  }
+
+  .drip-tab .drip-content .drip-description ul,
+  .drip-tab .drip-content .drip-description ol {
+    list-style-position: outside;
+    margin: 8px 0 8px 30px;
+  }
+
+  .drip-tab .drip-content .drip-description ul li
+  .drip-tab .drip-content .drip-description ol li {
+    padding: 0;
+  }
+
+  .drip-tab .drip-content img.drip-image {
+    margin-bottom: 20px;
+  }
+
+  .drip-tab.image-left .drip-content img.drip-image {
+    float: left;
+    width: 150px;
+  }
+
+  .drip-tab.image-right .drip-content img.drip-image {
+    float: right;
+    width: 150px;
+  }
+
+  @media screen and (max-width: 510px) {
+    .drip-tab.image-left .drip-content img.drip-image {
+      margin-right: 20px;
+      width: 100px;
+    }
+
+    .drip-tab.image-right .drip-content img.drip-image {
+      margin-left: 20px;
+      width: 100px;
+    }
+  }
+
+  .drip-tab .drip-content a.drip-close {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: -1px 0 0 0;
+    float: right;
+    font-size: 28px;
+    line-height: 15px;
+    font-weight: normal;
+    color: #333;
+    opacity: 0.4;
+  }
+
+  .drip-tab .drip-content a.drip-close:hover {
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.6;
+  }
+
+  /* === Content Subscribe Form === */
+
+  .drip-tab form {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .drip-tab dl {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .drip-tab dl dt {
+    display: block;
+    padding: 0 0 5px 0;
+    font-weight: bold;
+  }
+
+  .drip-tab dl.no-labels dt {
+    display: none;
+  }
+
+  .drip-tab dl dd {
+    display: block;
+    padding: 0 0 10px 0;
+  }
+
+  .drip-tab .drip-text-field {
+    margin: 0 !important;
+    padding: 6px !important;
+    height: auto !important;
+    width: 100% !important;
+    color: #333 !important;
+    background-color: #fff !important;
+    border: 1px solid #c4c4c4 !important;
+    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.18) !important;
+       -moz-box-shadow: inset 0 0 3px rgba(0,0,0,0.18) !important;
+            box-shadow: inset 0 0 3px rgba(0,0,0,0.18) !important;
+    -webkit-border-radius: 4px !important;
+       -moz-border-radius: 4px !important;
+            border-radius: 4px !important;
+    -webkit-box-sizing: border-box !important;
+       -moz-box-sizing: border-box !important;
+        -ms-box-sizing: border-box !important;
+            box-sizing: border-box !important;
+    background-image: none !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+  }
+
+  .drip-tab .drip-text-field::-webkit-input-placeholder { /* WebKit browsers */
+    color: #999999 !important;
+  }
+  .drip-tab .drip-text-field:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #999999 !important;
+  }
+  .drip-tab .drip-text-field::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #999999 !important;
+  }
+  .drip-tab .drip-text-field:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: #999999 !important;
+  }
+
+  .drip-tab .drip-text-field:focus {
+    border-color: #a4a4a4 !important;
+    outline: 0;
+    background-image: none;
+    background-color: #fff !important;
+  }
+
+  .drip-tab.mobile .drip-text-field {
+    font-size: 16px;
+  }
+
+  .drip-tab .drip-errors {
+    padding: 5px 0 0 0;
+    font-weight: normal;
+    color: red;
+  }
+
+  .drip-tab .drip-submit-button {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    padding: 3px 12px !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    line-height: 1.6 !important;
+    border: 0 !important;
+    -webkit-border-radius: 15px !important;
+       -moz-border-radius: 15px !important;
+            border-radius: 15px !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto;
+  }
+
+  .drip-tab .drip-submit-button:hover {
+    background-image: none !important;
+  }
+
+  .drip-tab .drip-submit-button:active {
+    background-image: none !important;
+  }
+
+</style></head>
+<body class="post-template-default single single-post postid-2305 single-format-standard chrome alt-style-default two-col-left width-960 two-col-left-960">
+<div id="wrapper">
+
+	<div id="inner-wrapper">
+
+	<h3 class="nav-toggle icon"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#navigation">Navigation</a></h3>
+
+	<header id="header" class="col-full">
+
+		<div id="logo">
+<a href="https://machinelearningmastery.com/" title="Making developers awesome at machine learning"><img src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/MachineLearningMastery.png" alt="Machine Learning Mastery"></a>
+<span class="site-title"><a href="https://machinelearningmastery.com/">Machine Learning Mastery</a></span>
+<span class="site-description">Making developers awesome at machine learning</span>
+</div>
+	    <div class="header-widget">
+	        <div id="text-3" class="widget widget_text">			<div class="textwidget"><br>
+<div style="font-size:12pt;">
+<a href="https://machinelearningmastery.com/start-here"><strong>Start Here</strong></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://machinelearningmastery.com/blog">Blog</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://machinelearningmastery.com/products">Books</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://machinelearningmastery.com/about">About</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://machinelearningmastery.com/contact">Contact</a>
+</div></div>
+		</div><div id="search-3" class="widget widget_search"><div class="search_main">
+    <form method="get" class="searchform" action="https://machinelearningmastery.com/">
+        <input type="text" class="field s" name="s" value="Search..." onfocus="if (this.value == &#39;Search...&#39;) {this.value = &#39;&#39;;}" onblur="if (this.value == &#39;&#39;) {this.value = &#39;Search...&#39;;}">
+        <button type="submit" class="fa fa-search submit" name="submit" value="Search"></button>
+    </form>
+    <div class="fix"></div>
+</div></div><div id="text-12" class="widget widget_text">			<div class="textwidget"><p>Want help with algorithms? <a href="https://machinelearningmastery.leadpages.co/machine-learning-algorithms-mini-course/">Take the FREE Mini-Course</a>.</p>
+</div>
+		</div>	    </div>
+	
+	</header>
+	<nav id="navigation" class="col-full" role="navigation">
+
+	
+	<section class="menus">
+
+		<a href="https://machinelearningmastery.com/" class="nav-home"><span>Home</span></a>
+
+	<h3>Empty Menu</h3>	<div class="side-nav">
+		</div><!-- /#side-nav -->
+
+	</section><!-- /.menus -->
+
+	<a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#top" class="nav-close"><span>Return to Content</span></a>
+
+</nav>
+       
+    <!-- #content Starts -->
+	    <div id="content" class="col-full">
+    
+    	<div id="main-sidebar-container">    
+
+            <!-- #main Starts -->
+                        <section id="main">                       
+<article class="post-2305 post type-post status-publish format-standard has-post-thumbnail hentry category-machine-learning-algorithms">
+	<header>
+	<h1 class="title entry-title">Naive Bayes for Machine Learning</h1>	</header>
+<div class="post-meta"><span class="small">By</span> <span class="author vcard"><span class="fn"><a href="https://machinelearningmastery.com/author/jasonb/" title="Posts by Jason Brownlee" rel="author">Jason Brownlee</a></span></span> <span class="small">on</span> <abbr class="date time published updated" title="2016-04-11T05:00:42+1100">April 11, 2016</abbr>  <span class="small">in</span> <span class="categories"><a href="https://machinelearningmastery.com/category/machine-learning-algorithms/" title="View all items in Machine Learning Algorithms">Machine Learning Algorithms</a></span>  </div>
+	<section class="entry">
+<div class="apss-social-share apss-theme-4 clearfix">
+
+
+				<div class="apss-twitter apss-single-icon">
+					<a rel="nofollow" onclick="apss_open_in_popup_window(event, &#39;https://twitter.com/intent/tweet?text=Naive%20Bayes%20for%20Machine%20Learning&amp;url=https%3A%2F%2Fmachinelearningmastery.com%2Fnaive-bayes-for-machine-learning%2F&amp;&#39;);" href="javascript:void(0);" title="Share on Twitter" target="">
+						<div class="apss-icon-block clearfix">
+							<i class="fa fa-twitter"></i>
+							<span class="apss-social-text">Share on Twitter</span><span class="apss-share">Tweet</span>
+						</div>
+											</a>
+				</div>
+								<div class="apss-facebook apss-single-icon">
+					<a rel="nofollow" onclick="apss_open_in_popup_window(event, &#39;https://www.facebook.com/sharer/sharer.php?u=https://machinelearningmastery.com/naive-bayes-for-machine-learning/&#39;);" title="Share on Facebook" target="" href="https://www.facebook.com/sharer/sharer.php?u=https://machinelearningmastery.com/naive-bayes-for-machine-learning/">
+						<div class="apss-icon-block clearfix">
+							<i class="fa fa-facebook"></i>
+							<span class="apss-social-text">Share on Facebook</span>
+							<span class="apss-share">Share</span>
+						</div>
+											</a>
+				</div>
+				
+				<div class="apss-linkedin apss-single-icon">
+					<a rel="nofollow" onclick="apss_open_in_popup_window(event, &#39;http://www.linkedin.com/shareArticle?mini=true&amp;title=Naive%20Bayes%20for%20Machine%20Learning&amp;url=https://machinelearningmastery.com/naive-bayes-for-machine-learning/&amp;summary=Naive+Bayes+is+a+simple+but+surprisingly+powerful+algorithm+for+predictive+modeling.%0D%0A%0D%0AIn+this+post...&#39;);" title="Share on LinkedIn" target="" href="http://www.linkedin.com/shareArticle?mini=true&amp;title=Naive%20Bayes%20for%20Machine%20Learning&amp;url=https://machinelearningmastery.com/naive-bayes-for-machine-learning/&amp;summary=Naive+Bayes+is+a+simple+but+surprisingly+powerful+algorithm+for+predictive+modeling.%0D%0A%0D%0AIn+this+post...">
+						<div class="apss-icon-block clearfix"><i class="fa fa-linkedin"></i>
+							<span class="apss-social-text">Share on LinkedIn</span>
+							<span class="apss-share">Share</span>
+						</div>
+											</a>
+				</div>
+								<div class="apss-google-plus apss-single-icon">
+					<a rel="nofollow" onclick="apss_open_in_popup_window(event, &#39;https://plus.google.com/share?url=https://machinelearningmastery.com/naive-bayes-for-machine-learning/&#39;);" title="Share on Google Plus" target="" href="https://plus.google.com/share?url=https://machinelearningmastery.com/naive-bayes-for-machine-learning/">
+						<div class="apss-icon-block clearfix">
+							<i class="fa fa-google-plus"></i>
+							<span class="apss-social-text">Share on Google Plus</span>
+							<span class="apss-share">Share</span>
+						</div>
+											</a>
+				</div>
+				</div><p>Naive Bayes is a simple but surprisingly powerful algorithm for predictive modeling.</p>
+<p>In this post you will discover the Naive Bayes algorithm for classification. After reading this post, you will know:</p>
+<ul>
+<li>The representation used by naive Bayes that is actually stored when a model is written to a file.</li>
+<li>How a learned model can be used to make predictions.</li>
+<li>How you can learn a naive Bayes model from training data.</li>
+<li>How to best prepare your data for the naive Bayes algorithm.</li>
+<li>Where to go for more information on naive Bayes.</li>
+</ul>
+<p>This post is written for developers and does not assume any background in statistics or probability, although knowing a little probability wouldn’t hurt.</p>
+<p>Let’s get started.</p>
+<div id="attachment_2306" style="max-width: 650px" class="wp-caption aligncenter"><img class="size-full wp-image-2306" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/Naive-Bayes-for-Machine-Learning.jpg" alt="Naive Bayes for Machine Learning" width="640" height="426" srcset="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2016/03/Naive-Bayes-for-Machine-Learning.jpg 640w, https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2016/03/Naive-Bayes-for-Machine-Learning-300x200.jpg 300w" sizes="(max-width: 640px) 100vw, 640px"><p class="wp-caption-text">Naive Bayes for Machine Learning<br>Photo by <a href="https://www.flickr.com/photos/aidanmorgan/3249101355/">John Morgan</a>, some rights reserved.</p></div>
+<h2>Quick Introduction to Bayes’ Theorem</h2>
+<p>In machine learning we are often interested in selecting the best hypothesis (h) given data (d).</p>
+<p>In a classification problem, our hypothesis (h) may be the&nbsp;class to assign for a new data instance (d).</p>
+<p>One of the easiest ways of selecting the most probable hypothesis given the data that we have that we can use as our prior knowledge about the problem. Bayes’ Theorem provides a way that we can calculate the probability of a hypothesis given our prior knowledge.</p>
+<p>Bayes’ Theorem is stated as:</p>
+<p style="text-align: center;">P(h|d) = (P(d|h) * P(h)) / P(d)</p>
+<p>Where</p>
+<ul>
+<li><strong>P(h|d)</strong> is the probability of hypothesis h given the data d. This is called the posterior probability.</li>
+<li><strong>P(d|h)</strong> is the probability of data d given that the hypothesis h was true.</li>
+<li><strong>P(h)</strong> is the probability of hypothesis h being true (regardless of the data). This is called the prior probability of h.</li>
+<li><strong>P(d)</strong> is the probability of the data (regardless of the hypothesis).</li>
+</ul>
+<p>You can see that we are interested in calculating the posterior probability of P(h|d) from the prior probability p(h) with P(D) and P(d|h).</p>
+<p>After calculating the posterior probability for a number of different hypotheses, you can select the hypothesis with the highest probability. This is the maximum probable hypothesis and may formally be called the <a href="https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation">maximum a posteriori</a> (MAP) hypothesis.</p>
+<p>This can be written as:</p>
+<p style="text-align: center;">MAP(h) = max(P(h|d))</p>
+<p style="text-align: center;">or</p>
+<p style="text-align: center;">MAP(h) = max((P(d|h) * P(h)) / P(d))</p>
+<p style="text-align: center;">or</p>
+<p style="text-align: center;">MAP(h) = max(P(d|h) * P(h))</p>
+<p>The P(d) is a normalizing term which allows us to calculate the probability. We can drop it when we are interested in the most probable hypothesis as it is constant and only used to normalize.</p>
+<p>Back to classification, if we have an even number of instances in each class in our training data, then the probability of each class (e.g. P(h)) will be equal. Again, this would be a constant term in our equation and we could drop it so that we end up with:</p>
+<p style="text-align: center;">MAP(h) = max(P(d|h))</p>
+<p>This is a useful exercise, because when reading up further on Naive Bayes you may see all of these forms of the theorem.</p>
+<!-- Start shortcoder --><h2 style="text-align: center;">Get your FREE Algorithms Mind Map</h2>
+<div id="attachment_2021" style="max-width: 395px" class="wp-caption alignleft"><img class="wp-image-2021 size-full" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/Machine-Learning-Algorithms-Mindmap-Sample.png" alt="Machine Learning Algorithms Mind Map" width="385" height="248"><p class="wp-caption-text">Sample of the handy machine learning algorithms mind map.</p></div>
+<p>I've created a handy mind map of 60+ algorithms organized by type.</p>
+<p>Download it, print it and use it.&nbsp;</p>
+<center><a style="color: #ffffff; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-weight: bold; font-size: 16px; line-height: 20px; padding: 10px; display: inline-block; max-width: 300px; border-radius: 5px; text-shadow: rgba(0, 0, 0, 0.247059) 0px -1px 1px; box-shadow: rgba(255, 255, 255, 0.498039) 0px 1px 3px inset, rgba(0, 0, 0, 0.498039) 0px 1px 3px; background: #ffce0a;" href="https://machinelearningmastery.leadpages.co/leadbox/147764973f72a2%3A164f8be4f346dc/5752754626625536/" target="_blank">Download For Free</a>
+<p><br>Also get exclusive access to the machine learning algorithms email mini-course.</p>
+</center>
+<p>&nbsp;</p>
+<p>&nbsp;</p><!-- End shortcoder v4.1.6-->
+<h2>Naive Bayes Classifier</h2>
+<p>Naive Bayes is a classification algorithm for binary (two-class) and multi-class classification problems. The technique is easiest to understand when described using binary or categorical input values.</p>
+<p>It is called <em>naive Bayes</em> or <em>idiot Bayes</em> because the calculation of the probabilities for each hypothesis are simplified to make&nbsp;their calculation tractable. Rather than attempting to calculate the values of each attribute value P(d1, d2, d3|h), they are assumed to be conditionally independent given the target value and calculated as P(d1|h) * P(d2|H) and so on.</p>
+<p>This is a very strong assumption that is most unlikely in real data, i.e. that the attributes do not interact. Nevertheless, the approach performs surprisingly well on data where this assumption does not hold.</p>
+<h3>Representation Used By Naive Bayes Models</h3>
+<p>The representation for naive Bayes is probabilities.</p>
+<p>A list of probabilities are stored to file for a learned naive Bayes model. This includes:</p>
+<ul>
+<li><strong>Class Probabilities</strong>: The probabilities of each class in the training dataset.</li>
+<li><strong>Conditional Probabilities</strong>: The conditional probabilities of each input value given each class value.</li>
+</ul>
+<h3>Learn a Naive Bayes Model From Data</h3>
+<p>Learning a naive Bayes model from your training data is fast.</p>
+<p>Training is fast because only the probability of each class and the probability of each class given different input (x) values need to be calculated. No coefficients need to be fitted by optimization procedures.</p>
+<h4>Calculating Class Probabilities</h4>
+<p>The class probabilities are simply the frequency of instances that belong to each class divided by the total number of instances.</p>
+<p>For example in a binary classification the probability of an instance belonging to class 1 would be calculated as:</p>
+<p>P(class=1) = count(class=1) / (count(class=0) + count(class=1))</p>
+<p>In the simplest case each class would have the probability of 0.5 or 50% for a binary classification problem with the same number of instances in each class.</p>
+<h4>Calculating Conditional Probabilities</h4>
+<p>The conditional probabilities are the frequency of each attribute value for a given class value divided by the frequency of instances with that class value.</p>
+<p>For example, if a “<em>weather</em>” attribute had the values “<em>sunny</em>” and “<em>rainy</em>” and the class attribute had the class values “<em>go-out</em>” and “<em>stay-home</em>“, then the conditional probabilities of each weather value for each class value could be calculated as:</p>
+<ul>
+<li>P(weather=sunny|class=go-out) = count(instances with weather=sunny and class=go-out) / count(instances with class=go-out)</li>
+<li>P(weather=sunny|class=stay-home) = count(instances with weather=sunny and class=stay-home) / count(instances with class=stay-home)</li>
+<li>P(weather=rainy|class=go-out) = count(instances with weather=rainy and class=go-out) / count(instances with class=go-out)</li>
+<li>P(weather=rainy|class=stay-home) = count(instances with weather=rainy and class=stay-home) / count(instances with class=stay-home)</li>
+</ul>
+<h3>Make Predictions With a Naive Bayes Model</h3>
+<p>Given a naive Bayes model, you can make predictions for new data using Bayes theorem.</p>
+<p style="text-align: center;">MAP(h) = max(P(d|h) * P(h))</p>
+<p>Using our example above, if we had a new instance with the <em>weather</em> of <em>sunny</em>, we can calculate:</p>
+<p style="text-align: center;">go-out = P(weather=sunny|class=go-out) * P(class=go-out)<br>
+stay-home = P(weather=sunny|class=stay-home) * P(class=stay-home)</p>
+<p>We can choose the class that has the largest calculated value. We can turn these values into probabilities by normalizing them as follows:</p>
+<p style="text-align: center;">P(go-out|weather=sunny) = go-out / (go-out + stay-home)<br>
+P(stay-home|weather=sunny) = stay-home / (go-out + stay-home)</p>
+<p>If we had more input variables we could extend the above example. For example, pretend we have a “<em>car</em>” attribute with the values “<em>working</em>” and “<em>broken</em>“. We can multiply this probability into the equation.</p>
+<p>For example below is the calculation for the “go-out” class label with the addition of the car input variable set to “working”:</p>
+<p style="text-align: center;">go-out = P(weather=sunny|class=go-out) * P(car=working|class=go-out) * P(class=go-out)</p>
+<h2>Gaussian Naive Bayes</h2>
+<p>Naive Bayes can be extended to real-valued&nbsp;attributes, most commonly by assuming a Gaussian distribution.</p>
+<p>This extension of naive Bayes is called Gaussian Naive Bayes. Other functions can be used to estimate the distribution of the data, but the Gaussian (or Normal distribution) is the easiest to work with because you only need to estimate the mean and the standard deviation from your training data.</p>
+<h3>Representation for Gaussian Naive Bayes</h3>
+<p>Above, we calculated the probabilities for input values for each class using a frequency. With real-valued inputs, we can calculate the mean and standard deviation of input&nbsp;values (x) for each class to summarize the distribution.</p>
+<p>This means that in addition to the probabilities for each class, we must also store the mean and standard deviations for each input variable for each class.</p>
+<h3>Learn a Gaussian Naive Bayes Model From Data</h3>
+<p>This is as simple as calculating the <a href="https://en.wikipedia.org/wiki/Mean">mean</a> and <a href="https://en.wikipedia.org/wiki/Standard_deviation">standard deviation</a> values of each input variable (x) for each class value.</p>
+<p style="text-align: center;">mean(x) = 1/n * sum(x)</p>
+<p>Where n is the number of instances and x are the values for an input variable in your training data.</p>
+<p>We can calculate the standard deviation using the following equation:</p>
+<p style="text-align: center;">standard deviation(x) = sqrt(1/n * sum(xi-mean(x)^2 ))</p>
+<p>This is the square root of the average squared difference of each value of x from the mean value of x, where n is the number of instances, sqrt() is the square root function, sum() is the sum function, xi is a specific value of the x variable for the i’th instance and mean(x) is described above, and ^2 is the square.</p>
+<h3>Make Predictions With a Gaussian Naive Bayes Model</h3>
+<p>Probabilities of new x values are calculated using the <a href="https://en.wikipedia.org/wiki/Normal_distribution">Gaussian Probability Density Function</a> (PDF).</p>
+<p>When making predictions these parameters can be plugged into the Gaussian PDF&nbsp;with a new input for the variable, and in return the Gaussian PDF will provide an estimate of the probability of that new input value for that class.</p>
+<p style="text-align: center;">pdf(x, mean, sd) = (1 / (sqrt(2 * PI) * sd)) * exp(-((x-mean^2)/(2*sd^2)))</p>
+<p>Where pdf(x) is the Gaussian PDF, sqrt() is the square root, mean and sd are the mean and standard deviation calculated above, <a href="https://en.wikipedia.org/wiki/Pi">PI</a> is the numerical constant, exp() is the numerical constant e or <a href="https://en.wikipedia.org/wiki/E_(mathematical_constant)">Euler’s number</a> raised to power and x is the input value for the input variable.</p>
+<p>We can then plug in the probabilities into the equation above to make predictions with real-valued inputs.</p>
+<p>For example, adapting one of the above calculations with numerical values for weather and car:</p>
+<p style="text-align: center;">go-out = P(pdf(weather)|class=go-out) * P(pdf(car)|class=go-out) * P(class=go-out)</p>
+<h2>Best Prepare Your Data For Naive Bayes</h2>
+<ul>
+<li><strong>Categorical Inputs</strong>: Naive Bayes assumes label&nbsp;attributes such as binary, categorical or nominal.</li>
+<li><strong>Gaussian Inputs</strong>: If the input variables are real-valued, a Gaussian distribution is assumed. In which case the algorithm will perform better if the univariate&nbsp;distributions of your data are Gaussian or near-Gaussian. This may require removing outliers (e.g. values that are more than 3 or 4 standard deviations from the mean).</li>
+<li><strong>Classification Problems</strong>: Naive Bayes is a classification algorithm suitable for binary and multiclass classification.</li>
+<li><strong>Log Probabilities</strong>: The calculation of the likelihood of different class values involves multiplying a lot of small numbers together. This can lead to an underflow of numerical precision. As such it is good practice to use a log transform of the probabilities to avoid this underflow.</li>
+<li><strong>Kernel Functions</strong>: Rather than assuming a Gaussian distribution for numerical input values, more complex distributions can be used such as a variety of kernel density functions.</li>
+<li><strong>Update Probabilities</strong>: When new data becomes available, you can simply update the probabilities of your model. This can be helpful if the data changes frequently.</li>
+</ul>
+<h2>Further Reading</h2>
+<p>Two other posts on Naive Bayes that you might find interesting are:</p>
+<ul>
+<li><a href="http://machinelearningmastery.com/naive-bayes-classifier-scratch-python/">How To Implement Naive Bayes From Scratch in Python</a></li>
+<li><a href="http://machinelearningmastery.com/better-naive-bayes/">Better Naive Bayes: 12 Tips To Get The Most From The Naive Bayes Algorithm</a></li>
+</ul>
+<p>I love books. Below are some good general machine learning books for developers that cover naive Bayes:</p>
+<ul>
+<li><a class="easyazon-link" href="http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20">Data Mining: Practical Machine Learning Tools and Techniques</a>, page 88</li>
+<li><a class="easyazon-link" href="http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20">Applied Predictive Modeling</a>, page 353</li>
+<li><a class="easyazon-link" href="http://www.amazon.com/dp/0136042597?tag=inspiredalgor-20">Artificial Intelligence: A Modern Approach</a>,&nbsp;page 808</li>
+<li><a class="easyazon-link" href="http://www.amazon.com/dp/0070428077?tag=inspiredalgor-20">Machine Learning</a>, chapter 6</li>
+</ul>
+<h2>Summary</h2>
+<p>In this post you discovered the Naive Bayes algorithm for classification. You learned about:</p>
+<ul>
+<li>The Bayes Theorem and how to calculate it in practice.</li>
+<li>Naive Bayes algorithm including representation, making predictions and learning the model.</li>
+<li>The adaptation of Naive Bayes for real-valued input data called Gaussian Naive Bayes.</li>
+<li>How to prepare data for Naive Bayes.</li>
+</ul>
+<p>Do you have any questions about naive Bayes or about this post? Leave a comment and ask your question, I will do my best to answer it.</p>
+<!-- Shortcoder conditions not met -->
+<div class="awac-wrapper"><div class="awac widget text-36">			<div class="textwidget"><p></p><div class="woo-sc-hr"></div><br>
+<center><p></p>
+<h2 style="text-align: center;">Frustrated With Machine Learning Math?</h2>
+<p><a href="https://machinelearningmastery.com/master-machine-learning-algorithms/"><img style="border: 0;" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/MasterMachineLearningAlgorithms-small.png" alt="Mater Machine Learning Algorithms" align="left"></a></p>
+<h4 style="text-align: center;">See How Algorithms Work in Minutes</h4>
+<p style="text-align: center;">…with just arithmetic and simple examples</p>
+<p style="text-align: center;">Discover how in my new Ebook: <a href="https://machinelearningmastery.com/master-machine-learning-algorithms/">Master Machine Learning Algorithms</a></p>
+<p style="text-align: center;">It covers <strong>explanations</strong> and <strong>examples</strong> of <strong>10 top algorithms</strong>, like:<br><em>Linear Regression</em>, <em>k-Nearest Neighbors</em>, <em>Support Vector Machines</em> and much more…</p>
+<h4 style="text-align: center;">Finally, Pull Back the Curtain on <br>Machine Learning Algorithms</h4>
+<p style="text-align: center;">Skip the Academics. Just Results.</p>
+<p style="text-align: center;"><a href="https://machinelearningmastery.com/master-machine-learning-algorithms/">Click to learn more</a>.</p>
+<p></p></center><br>
+<div class="woo-sc-hr"></div><p></p>
+</div>
+		</div></div><div class="apss-social-share apss-theme-4 clearfix">
+
+
+				<div class="apss-twitter apss-single-icon">
+					<a rel="nofollow" onclick="apss_open_in_popup_window(event, &#39;https://twitter.com/intent/tweet?text=Naive%20Bayes%20for%20Machine%20Learning&amp;url=https%3A%2F%2Fmachinelearningmastery.com%2Fnaive-bayes-for-machine-learning%2F&amp;&#39;);" href="javascript:void(0);" title="Share on Twitter" target="">
+						<div class="apss-icon-block clearfix">
+							<i class="fa fa-twitter"></i>
+							<span class="apss-social-text">Share on Twitter</span><span class="apss-share">Tweet</span>
+						</div>
+											</a>
+				</div>
+								<div class="apss-facebook apss-single-icon">
+					<a rel="nofollow" onclick="apss_open_in_popup_window(event, &#39;https://www.facebook.com/sharer/sharer.php?u=https://machinelearningmastery.com/naive-bayes-for-machine-learning/&#39;);" title="Share on Facebook" target="" href="https://www.facebook.com/sharer/sharer.php?u=https://machinelearningmastery.com/naive-bayes-for-machine-learning/">
+						<div class="apss-icon-block clearfix">
+							<i class="fa fa-facebook"></i>
+							<span class="apss-social-text">Share on Facebook</span>
+							<span class="apss-share">Share</span>
+						</div>
+											</a>
+				</div>
+				
+				<div class="apss-linkedin apss-single-icon">
+					<a rel="nofollow" onclick="apss_open_in_popup_window(event, &#39;http://www.linkedin.com/shareArticle?mini=true&amp;title=Naive%20Bayes%20for%20Machine%20Learning&amp;url=https://machinelearningmastery.com/naive-bayes-for-machine-learning/&amp;summary=Naive+Bayes+is+a+simple+but+surprisingly+powerful+algorithm+for+predictive+modeling.%0D%0A%0D%0AIn+this+post...&#39;);" title="Share on LinkedIn" target="" href="http://www.linkedin.com/shareArticle?mini=true&amp;title=Naive%20Bayes%20for%20Machine%20Learning&amp;url=https://machinelearningmastery.com/naive-bayes-for-machine-learning/&amp;summary=Naive+Bayes+is+a+simple+but+surprisingly+powerful+algorithm+for+predictive+modeling.%0D%0A%0D%0AIn+this+post...">
+						<div class="apss-icon-block clearfix"><i class="fa fa-linkedin"></i>
+							<span class="apss-social-text">Share on LinkedIn</span>
+							<span class="apss-share">Share</span>
+						</div>
+											</a>
+				</div>
+								<div class="apss-google-plus apss-single-icon">
+					<a rel="nofollow" onclick="apss_open_in_popup_window(event, &#39;https://plus.google.com/share?url=https://machinelearningmastery.com/naive-bayes-for-machine-learning/&#39;);" title="Share on Google Plus" target="" href="https://plus.google.com/share?url=https://machinelearningmastery.com/naive-bayes-for-machine-learning/">
+						<div class="apss-icon-block clearfix">
+							<i class="fa fa-google-plus"></i>
+							<span class="apss-social-text">Share on Google Plus</span>
+							<span class="apss-share">Share</span>
+						</div>
+											</a>
+				</div>
+				</div>	</section><!-- /.entry -->
+	<div class="fix"></div>
+<aside id="post-author">
+	<div class="profile-image"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/1d75d46040c28497f0dee5d8e100db37" srcset="https://secure.gravatar.com/avatar/1d75d46040c28497f0dee5d8e100db37?s=160&amp;d=mm&amp;r=g 2x" class="avatar avatar-80 photo" height="80" width="80"></div>
+	<div class="profile-content">
+		<h4>About Jason Brownlee</h4>
+		Jason Brownlee, Ph.D. is a machine learning specialist who teaches developers how to get results with modern machine learning methods via hands-on tutorials.				<div class="profile-link">
+			<a href="https://machinelearningmastery.com/author/jasonb/">
+				View all posts by Jason Brownlee <span class="meta-nav">→</span>			</a>
+		</div><!--#profile-link-->
+			</div>
+	<div class="fix"></div>
+</aside>
+<div class="post-utility"></div>
+</article><!-- /.post -->
+	        <div class="post-entries">
+	            <div class="nav-prev fl"><a href="https://machinelearningmastery.com/classification-and-regression-trees-for-machine-learning/" rel="prev"><i class="fa fa-angle-left"></i> Classification And Regression Trees for Machine Learning</a></div>
+	            <div class="nav-next fr"><a href="https://machinelearningmastery.com/naive-bayes-tutorial-for-machine-learning/" rel="next">Naive Bayes Tutorial for Machine Learning <i class="fa fa-angle-right"></i></a></div>
+	            <div class="fix"></div>
+	        </div>
+
+		<div id="comments">		 	<h3 id="comments-title">22 Responses to <em>Naive Bayes for Machine Learning</em></h3>
+		 	<ol class="commentlist">
+				
+		<li id="comment-382774" class="comment even thread-even depth-1 parent">
+
+	      	<div id="li-comment-382774" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/79594a13ac4d1dd0bf2ab0ac1f6bfa5c" srcset="https://secure.gravatar.com/avatar/79594a13ac4d1dd0bf2ab0ac1f6bfa5c?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name">ML704</span>
+	                <span class="date">January 18, 2017 at 3:18 pm</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-382774" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>Hi, how to understand this statement:<br>
+*if we have an even number of instances in each class in our training data, then the probability of each class (e.g. P(h)) will be equal*?<br>
+Can you give some clear and concise examples on this?<br>
+Thank you?</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=382774#respond" onclick="return addComment.moveForm( &quot;comment-382774&quot;, &quot;382774&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to ML704">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-382887" class="comment byuser comment-author-jasonb bypostauthor odd alt depth-2 parent">
+
+	      	<div id="li-comment-382887" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/1d75d46040c28497f0dee5d8e100db37(1)" srcset="https://secure.gravatar.com/avatar/1d75d46040c28497f0dee5d8e100db37?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name"><a href="http://machinelearningmastery.com/" rel="external nofollow" class="url">Jason Brownlee</a></span>
+	                <span class="date">January 19, 2017 at 7:23 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-382887" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>Sure, if you have two classes “red” and “blue” and 50 examples in each class, then the classes have an equal number of observations. </p>
+<p>The probability of any random sample drawn from the population belonging to one class or another is 0.5.</p>
+<p>I hope that helps.</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=382887#respond" onclick="return addComment.moveForm( &quot;comment-382887&quot;, &quot;382887&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Jason Brownlee">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-382931" class="comment even depth-3">
+
+	      	<div id="li-comment-382931" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/79594a13ac4d1dd0bf2ab0ac1f6bfa5c" srcset="https://secure.gravatar.com/avatar/79594a13ac4d1dd0bf2ab0ac1f6bfa5c?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name">ML704</span>
+	                <span class="date">January 19, 2017 at 1:02 pm</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-382931" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>Yes, I see now. Here I got the word “even” as any even number like 4, 6, or 8. My bad!</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=382931#respond" onclick="return addComment.moveForm( &quot;comment-382931&quot;, &quot;382931&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to ML704">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+		<li id="comment-397239" class="comment odd alt thread-odd thread-alt depth-1 parent">
+
+	      	<div id="li-comment-397239" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/ea8141552406c2a89efab76798db4734" srcset="https://secure.gravatar.com/avatar/ea8141552406c2a89efab76798db4734?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name">Nitinram Velraj</span>
+	                <span class="date">April 22, 2017 at 4:54 pm</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-397239" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>For a classification based on multiple features is it necessary to a multivariate gaussian distribution to decide class labels or will it be sufficient to decide the likelihoods of each feature considering each feature given that it is class yi to follow a gaussian distribution and then simple multiply them together to get the likelihoods? If the answer is yes, can you possibly direct me towards some references?<br>
+Thanks in advance!</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=397239#respond" onclick="return addComment.moveForm( &quot;comment-397239&quot;, &quot;397239&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Nitinram Velraj">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-397287" class="comment byuser comment-author-jasonb bypostauthor even depth-2">
+
+	      	<div id="li-comment-397287" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/1d75d46040c28497f0dee5d8e100db37(1)" srcset="https://secure.gravatar.com/avatar/1d75d46040c28497f0dee5d8e100db37?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name"><a href="http://machinelearningmastery.com/" rel="external nofollow" class="url">Jason Brownlee</a></span>
+	                <span class="date">April 23, 2017 at 5:08 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-397287" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>It depends on the problem. Naive Bayes will assume independent gaussian distributions.</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=397287#respond" onclick="return addComment.moveForm( &quot;comment-397287&quot;, &quot;397287&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Jason Brownlee">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+		<li id="comment-408638" class="comment odd alt thread-even depth-1 parent">
+
+	      	<div id="li-comment-408638" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/019f33f5ee0f815fee852bb619242caa" srcset="https://secure.gravatar.com/avatar/019f33f5ee0f815fee852bb619242caa?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name">nebro</span>
+	                <span class="date">August 5, 2017 at 7:41 pm</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-408638" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>How do I use Naïve Bayes Machine Learning to detect and prevent SQL injection attack, so I mean by question when attacker inject malicious code this code saved in server and algorithm works after that? Or what happen in fact?</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=408638#respond" onclick="return addComment.moveForm( &quot;comment-408638&quot;, &quot;408638&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to nebro">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-408690" class="comment byuser comment-author-jasonb bypostauthor even depth-2">
+
+	      	<div id="li-comment-408690" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/1d75d46040c28497f0dee5d8e100db37(1)" srcset="https://secure.gravatar.com/avatar/1d75d46040c28497f0dee5d8e100db37?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name"><a href="http://machinelearningmastery.com/" rel="external nofollow" class="url">Jason Brownlee</a></span>
+	                <span class="date">August 6, 2017 at 7:37 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-408690" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>It would depend on how you frame your problem:<br>
+<a href="http://machinelearningmastery.com/how-to-define-your-machine-learning-problem/" rel="nofollow">http://machinelearningmastery.com/how-to-define-your-machine-learning-problem/</a></p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=408690#respond" onclick="return addComment.moveForm( &quot;comment-408690&quot;, &quot;408690&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Jason Brownlee">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+		<li id="comment-411125" class="comment odd alt thread-odd thread-alt depth-1 parent">
+
+	      	<div id="li-comment-411125" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/0255d363eb6e1703ef68a76c87525b4d" srcset="https://secure.gravatar.com/avatar/0255d363eb6e1703ef68a76c87525b4d?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name">Valentino</span>
+	                <span class="date">August 26, 2017 at 1:32 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-411125" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>Hey, for what it concerns the Gaussian Naive Bayes Model, how do you evaluate the conditional probability P(pdf(weather)|class=go-out)? The pdf(x, mean, sd) returns the probability density function which is not a probability (sometimes the value can be higher than 1). Can you please clarify this?</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=411125#respond" onclick="return addComment.moveForm( &quot;comment-411125&quot;, &quot;411125&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Valentino">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-413603" class="comment even depth-2">
+
+	      	<div id="li-comment-413603" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/0255d363eb6e1703ef68a76c87525b4d" srcset="https://secure.gravatar.com/avatar/0255d363eb6e1703ef68a76c87525b4d?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name">Valentino</span>
+	                <span class="date">September 13, 2017 at 2:07 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-413603" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>Hey, did you have any time to give a look at the question?</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=413603#respond" onclick="return addComment.moveForm( &quot;comment-413603&quot;, &quot;413603&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Valentino">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+		<li id="comment-420411" class="comment odd alt thread-even depth-1 parent">
+
+	      	<div id="li-comment-420411" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/60ebd324b1dadba852892b328d673b88" srcset="https://secure.gravatar.com/avatar/60ebd324b1dadba852892b328d673b88?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name">Tasnem elazab</span>
+	                <span class="date">November 18, 2017 at 9:46 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-420411" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>Hi Dr. Jason,<br>
+what is the best machine learning algorithm for text classification?<br>
+thanks,</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=420411#respond" onclick="return addComment.moveForm( &quot;comment-420411&quot;, &quot;420411&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Tasnem elazab">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-420436" class="comment byuser comment-author-jasonb bypostauthor even depth-2">
+
+	      	<div id="li-comment-420436" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/1d75d46040c28497f0dee5d8e100db37(1)" srcset="https://secure.gravatar.com/avatar/1d75d46040c28497f0dee5d8e100db37?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name"><a href="http://machinelearningmastery.com/" rel="external nofollow" class="url">Jason Brownlee</a></span>
+	                <span class="date">November 18, 2017 at 10:30 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-420436" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>Try a suite and see what works best for your specific data.</p>
+<p>CNNs with a word embedding do very well.</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=420436#respond" onclick="return addComment.moveForm( &quot;comment-420436&quot;, &quot;420436&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Jason Brownlee">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+		<li id="comment-420740" class="comment odd alt thread-odd thread-alt depth-1 parent">
+
+	      	<div id="li-comment-420740" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/ce597298b688a0d3d76e7dfff9fbf161" srcset="https://secure.gravatar.com/avatar/ce597298b688a0d3d76e7dfff9fbf161?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name">Krish</span>
+	                <span class="date">November 21, 2017 at 3:46 pm</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-420740" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>Hi Dr. Jason,</p>
+<p>Nice explanation. </p>
+<p>1) Is there an article which explains generative vs discriminative models? Or could you give some intuitive explanation of these two models. </p>
+<p>2) Articles explaining HMM, CRF and MEMM?</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=420740#respond" onclick="return addComment.moveForm( &quot;comment-420740&quot;, &quot;420740&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Krish">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-420813" class="comment byuser comment-author-jasonb bypostauthor even depth-2 parent">
+
+	      	<div id="li-comment-420813" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/1d75d46040c28497f0dee5d8e100db37(1)" srcset="https://secure.gravatar.com/avatar/1d75d46040c28497f0dee5d8e100db37?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name"><a href="http://machinelearningmastery.com/" rel="external nofollow" class="url">Jason Brownlee</a></span>
+	                <span class="date">November 22, 2017 at 11:09 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-420813" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>I don’t have posts on those topics, I hope to cover them in the future.</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=420813#respond" onclick="return addComment.moveForm( &quot;comment-420813&quot;, &quot;420813&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Jason Brownlee">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-420846" class="comment odd alt depth-3">
+
+	      	<div id="li-comment-420846" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/ce597298b688a0d3d76e7dfff9fbf161" srcset="https://secure.gravatar.com/avatar/ce597298b688a0d3d76e7dfff9fbf161?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name">Krish</span>
+	                <span class="date">November 22, 2017 at 3:51 pm</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-420846" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>Hi Dr. Jason, Thank you for getting back to me. Will look forward for those topics. Thank you.</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=420846#respond" onclick="return addComment.moveForm( &quot;comment-420846&quot;, &quot;420846&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Krish">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+		<li id="comment-421505" class="comment even thread-even depth-1 parent">
+
+	      	<div id="li-comment-421505" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/f0cb46c33e871f15220304ece4226988" srcset="https://secure.gravatar.com/avatar/f0cb46c33e871f15220304ece4226988?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name">rica</span>
+	                <span class="date">November 29, 2017 at 12:33 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-421505" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>hi how is it become a lazy algorithm? and can you tell some applications using a naive bayse,..</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=421505#respond" onclick="return addComment.moveForm( &quot;comment-421505&quot;, &quot;421505&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to rica">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-421549" class="comment byuser comment-author-jasonb bypostauthor odd alt depth-2">
+
+	      	<div id="li-comment-421549" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/1d75d46040c28497f0dee5d8e100db37(1)" srcset="https://secure.gravatar.com/avatar/1d75d46040c28497f0dee5d8e100db37?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name"><a href="http://machinelearningmastery.com/" rel="external nofollow" class="url">Jason Brownlee</a></span>
+	                <span class="date">November 29, 2017 at 8:26 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-421549" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>You can apply it on most predictive modeling problems and compare the results to other algorithms to see if it should be used or not.</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=421549#respond" onclick="return addComment.moveForm( &quot;comment-421549&quot;, &quot;421549&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Jason Brownlee">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+		<li id="comment-425901" class="comment even thread-odd thread-alt depth-1 parent">
+
+	      	<div id="li-comment-425901" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/6780454b8ce545742ba027a95d7642f0" srcset="https://secure.gravatar.com/avatar/6780454b8ce545742ba027a95d7642f0?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name"><a href="http://%20github%20page/" rel="external nofollow" class="url">zaheer Abbas</a></span>
+	                <span class="date">January 9, 2018 at 3:40 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-425901" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>hello sir, I am doing social media analysis for predicting social crime (cyberbully, hacking etc..)</p>
+<p>how we use naïve Bayes algorithm for multi-class that we set, for predicting social crime.<br>
+(for example particular tweet or post belonging  to  specified social crime  class and how we train model for identifying and predicting social crime)</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=425901#respond" onclick="return addComment.moveForm( &quot;comment-425901&quot;, &quot;425901&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to zaheer Abbas">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-425924" class="comment byuser comment-author-jasonb bypostauthor odd alt depth-2">
+
+	      	<div id="li-comment-425924" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/1d75d46040c28497f0dee5d8e100db37(1)" srcset="https://secure.gravatar.com/avatar/1d75d46040c28497f0dee5d8e100db37?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name"><a href="http://machinelearningmastery.com/" rel="external nofollow" class="url">Jason Brownlee</a></span>
+	                <span class="date">January 9, 2018 at 5:34 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-425924" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>I would encourage you to use the sklearn implementation.</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=425924#respond" onclick="return addComment.moveForm( &quot;comment-425924&quot;, &quot;425924&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Jason Brownlee">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+		<li id="comment-428372" class="comment even thread-even depth-1 parent">
+
+	      	<div id="li-comment-428372" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/ae79e45f73a01da15cc62ef97dc63189" srcset="https://secure.gravatar.com/avatar/ae79e45f73a01da15cc62ef97dc63189?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name"><a href="http://www.machinelearningmastery.com/" rel="external nofollow" class="url">anil kumar</a></span>
+	                <span class="date">February 4, 2018 at 11:38 pm</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-428372" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>hello sir, i want to use naive bayes algorithm for blood donors data for  prediction the blood donors for next time blood donation  according to their age. Sir, is it possible of these kind of prediction.</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=428372#respond" onclick="return addComment.moveForm( &quot;comment-428372&quot;, &quot;428372&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to anil kumar">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-428407" class="comment byuser comment-author-jasonb bypostauthor odd alt depth-2">
+
+	      	<div id="li-comment-428407" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/1d75d46040c28497f0dee5d8e100db37(1)" srcset="https://secure.gravatar.com/avatar/1d75d46040c28497f0dee5d8e100db37?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name"><a href="http://machinelearningmastery.com/" rel="external nofollow" class="url">Jason Brownlee</a></span>
+	                <span class="date">February 5, 2018 at 7:46 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-428407" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>I would recommend this process to work through your problem:<br>
+<a href="https://machinelearningmastery.com/start-here/#process" rel="nofollow">https://machinelearningmastery.com/start-here/#process</a></p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=428407#respond" onclick="return addComment.moveForm( &quot;comment-428407&quot;, &quot;428407&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Jason Brownlee">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+		<li id="comment-429767" class="comment even thread-odd thread-alt depth-1 parent">
+
+	      	<div id="li-comment-429767" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/886efd4daa35045b13bdf91c6cf98b24" srcset="https://secure.gravatar.com/avatar/886efd4daa35045b13bdf91c6cf98b24?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name">gaurav</span>
+	                <span class="date">February 17, 2018 at 10:11 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-429767" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>Thanks for the informative blog Jason. I have a question. In the definition of MAP you have mentioned that likellihood is multiplied with the probability of hyposthesis. Based on your example, I understand that this hypothesis some output class probability. I was referring some other blogs and they mentioned that to compute MAP need to multiply with the probability of prior of model parameters. Please find the links below.</p>
+<p><a href="https://wiseodd.github.io/techblog/2017/01/01/mle-vs-map/" rel="nofollow">https://wiseodd.github.io/techblog/2017/01/01/mle-vs-map/</a></p>
+<p><a href="https://www.quora.com/What-is-the-difference-between-Maximum-Likelihood-ML-and-Maximum-a-Posteri-MAP-estimation" rel="nofollow">https://www.quora.com/What-is-the-difference-between-Maximum-Likelihood-ML-and-Maximum-a-Posteri-MAP-estimation</a> </p>
+<p>Does this means, MAP is generic formula from Baye’s rule that can be used with both output classes priors and model parameter priors? I guess I am missing something very fundamental here.</p>
+<p>Is MAP used for both model</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=429767#respond" onclick="return addComment.moveForm( &quot;comment-429767&quot;, &quot;429767&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to gaurav">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	<ul class="children">
+
+		<li id="comment-429806" class="comment byuser comment-author-jasonb bypostauthor odd alt depth-2">
+
+	      	<div id="li-comment-429806" class="comment-container">
+
+					                <div class="avatar"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/1d75d46040c28497f0dee5d8e100db37(1)" srcset="https://secure.gravatar.com/avatar/1d75d46040c28497f0dee5d8e100db37?s=80&amp;d=mm&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40"></div>
+	            
+		      	<div class="comment-head">
+
+	                <span class="name"><a href="http://machinelearningmastery.com/" rel="external nofollow" class="url">Jason Brownlee</a></span>
+	                <span class="date">February 18, 2018 at 6:45 am</span>
+	                <span class="perma"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#comment-429806" title="Direct link to this comment">#</a></span>
+	                <span class="edit"></span>
+
+				</div><!-- /.comment-head -->
+
+		   		<div class="comment-entry">
+
+				<p>Yes you should include the prior, I excluded it here because it was the same for each class.</p>
+
+				
+	                <div class="reply">
+	                    <a rel="nofollow" class="comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/?replytocom=429806#respond" onclick="return addComment.moveForm( &quot;comment-429806&quot;, &quot;429806&quot;, &quot;respond&quot;, &quot;2305&quot; )" aria-label="Reply to Jason Brownlee">Reply</a>	                </div><!-- /.reply -->
+
+				</div><!-- /comment-entry -->
+
+			</div><!-- /.comment-container -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+			</ol>
+		 	</div>	<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#respond" style="display:none;">Click here to cancel reply.</a></small></h3>			<form action="https://machinelearningmastery.com/wp-comments-post.php?wpe-comment-post=mlmastery" method="post" id="commentform" class="comment-form">
+				<p class="comment-form-comment"><label class="hide" for="comment">Comment</label> <textarea tabindex="4" id="comment" name="comment" cols="50" rows="10" maxlength="65525" aria-required="true" required="required"></textarea></p><p class="comment-form-author"><input id="author" name="author" type="text" class="txt" tabindex="1" value="" size="30" aria-required="true"><label for="author">Name <span class="required">(required)</span></label> </p>
+<p class="comment-form-email"><input id="email" name="email" type="text" class="txt" tabindex="2" value="" size="30" aria-required="true"><label for="email">Email (will not be published) <span class="required">(required)</span></label> </p>
+<p class="comment-form-url"><input id="url" name="url" type="text" class="txt" tabindex="3" value="" size="30"><label for="url">Website</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Submit Comment"> <input type="hidden" name="comment_post_ID" value="2305" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="0ccae9e07f"></p><p style="display: none;"></p>			<input type="hidden" id="ak_js" name="ak_js" value="1519860821891"></form>
+			</div><!-- #respond -->
+	     
+            </section><!-- /#main -->
+                
+            <aside id="sidebar">
+<div id="woo_blogauthorinfo-2" class="widget widget_woo_blogauthorinfo"><h3>Welcome to Machine Learning Mastery</h3><span class="left"><img alt="" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/1d75d46040c28497f0dee5d8e100db37(2)" srcset="https://secure.gravatar.com/avatar/1d75d46040c28497f0dee5d8e100db37?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100"></span>
+<p>Hi, I'm Jason Brownlee, Ph.D.
+<br>
+My goal is to make practitioners like YOU awesome at applied machine learning.</p>
+<p><a href="https://machinelearningmastery.com/about">Read More</a></p>
+<div class="fix"></div>
+</div><div id="text-9" class="widget widget_text"><h3>Understand Machine Learning Algorithms!</h3>			<div class="textwidget"><center>
+Sick of all the advanced math?<br>
+Need step-by-step explainations for top algorithms?<br>
+Want worked examples in spreadsheets?<br>
+<br>
+<a href="https://machinelearningmastery.com/master-machine-learning-algorithms/">Finally Understand Machine Learning Algorithms! </a>
+<a href="https://machinelearningmastery.com/master-machine-learning-algorithms/"><img src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/MasterMachineLearningAlgorithms-small.png" alt="Master Machine Learning Algorithms"></a>
+<br>
+</center></div>
+		</div>
+		<div id="woo_tabs-2" class="widget widget_woo_tabs"> 		<div id="tabs">
+
+            <ul class="wooTabs">
+                                <li class="popular"><a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#tab-pop" class="selected">Popular</a></li>                                                            </ul>
+
+            <div class="clear"></div>
+
+            <div class="boxes box inside">
+
+	            
+                                <ul id="tab-pop" class="list" style="display: block;">
+                    	<li>
+		<a href="https://machinelearningmastery.com/machine-learning-in-python-step-by-step/" title="Your First Machine Learning Project in Python Step-By-Step"><img width="45" height="45" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/Your-First-Machine-Learning-Project-in-Python-Step-By-Step-150x150.jpg" class="thumbnail wp-post-image" alt="Your First Machine Learning Project in Python Step-By-Step" title="Your First Machine Learning Project in Python Step-By-Step"></a>		<a title="Your First Machine Learning Project in Python Step-By-Step" href="https://machinelearningmastery.com/machine-learning-in-python-step-by-step/">Your First Machine Learning Project in Python Step-By-Step</a>
+		<span class="meta">June 10, 2016</span>
+		<div class="fix"></div>
+	</li>
+		<li>
+		<a href="https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/" title="Time Series Prediction with LSTM Recurrent Neural Networks in Python with Keras"><img width="45" height="45" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/Time-Series-Prediction-with-LSTM-Recurrent-Neural-Networks-in-Python-with-Keras-150x150.jpg" class="thumbnail wp-post-image" alt="Time Series Prediction with LSTM Recurrent Neural Networks in Python with Keras" title="Time Series Prediction with LSTM Recurrent Neural Networks in Python with Keras"></a>		<a title="Time Series Prediction with LSTM Recurrent Neural Networks in Python with Keras" href="https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/">Time Series Prediction with LSTM Recurrent Neural Networks in Python with Keras</a>
+		<span class="meta">July 21, 2016</span>
+		<div class="fix"></div>
+	</li>
+		<li>
+		<a href="https://machinelearningmastery.com/multivariate-time-series-forecasting-lstms-keras/" title="Multivariate Time Series Forecasting with LSTMs in Keras"><img width="45" height="45" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/Line-Plots-of-Air-Pollution-Time-Series-150x150.png" class="thumbnail wp-post-image" alt="Line Plots of Air Pollution Time Series" title="Multivariate Time Series Forecasting with LSTMs in Keras"></a>		<a title="Multivariate Time Series Forecasting with LSTMs in Keras" href="https://machinelearningmastery.com/multivariate-time-series-forecasting-lstms-keras/">Multivariate Time Series Forecasting with LSTMs in Keras</a>
+		<span class="meta">August 14, 2017</span>
+		<div class="fix"></div>
+	</li>
+		<li>
+		<a href="https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/" title="How to Setup a Python Environment for Machine Learning and Deep Learning with Anaconda"><img width="45" height="45" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/How-to-Setup-a-Python-Environment-for-Machine-Learning-and-Deep-Learning-with-Anaconda-150x150.png" class="thumbnail wp-post-image" alt="How to Setup a Python Environment for Machine Learning and Deep Learning with Anaconda" title="How to Setup a Python Environment for Machine Learning and Deep Learning with Anaconda"></a>		<a title="How to Setup a Python Environment for Machine Learning and Deep Learning with Anaconda" href="https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/">How to Setup a Python Environment for Machine Learning and Deep Learning with Anaconda</a>
+		<span class="meta">March 13, 2017</span>
+		<div class="fix"></div>
+	</li>
+		<li>
+		<a href="https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/" title="Develop Your First Neural Network in Python With Keras Step-By-Step"><img width="45" height="45" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/Tour-of-Deep-Learning-Algorithms-150x150.jpg" class="thumbnail wp-post-image" alt="Tour of Deep Learning Algorithms" title="Develop Your First Neural Network in Python With Keras Step-By-Step"></a>		<a title="Develop Your First Neural Network in Python With Keras Step-By-Step" href="https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/">Develop Your First Neural Network in Python With Keras Step-By-Step</a>
+		<span class="meta">May 24, 2016</span>
+		<div class="fix"></div>
+	</li>
+		<li>
+		<a href="https://machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/" title="Sequence Classification with LSTM Recurrent Neural Networks in Python with Keras"><img width="45" height="45" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/Sequence-Classification-with-LSTM-Recurrent-Neural-Networks-in-Python-with-Keras-150x150.jpg" class="thumbnail wp-post-image" alt="Sequence Classification with LSTM Recurrent Neural Networks in Python with Keras" title="Sequence Classification with LSTM Recurrent Neural Networks in Python with Keras"></a>		<a title="Sequence Classification with LSTM Recurrent Neural Networks in Python with Keras" href="https://machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/">Sequence Classification with LSTM Recurrent Neural Networks in Python with Keras</a>
+		<span class="meta">July 26, 2016</span>
+		<div class="fix"></div>
+	</li>
+		<li>
+		<a href="https://machinelearningmastery.com/time-series-forecasting-long-short-term-memory-network-python/" title="Time Series Forecasting with the Long Short-Term Memory Network in Python"><img width="45" height="45" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/Time-Series-Forecasting-with-the-Long-Short-Term-Memory-Network-in-Python-150x150.jpg" class="thumbnail wp-post-image" alt="Time Series Forecasting with the Long Short-Term Memory Network in Python" title="Time Series Forecasting with the Long Short-Term Memory Network in Python"></a>		<a title="Time Series Forecasting with the Long Short-Term Memory Network in Python" href="https://machinelearningmastery.com/time-series-forecasting-long-short-term-memory-network-python/">Time Series Forecasting with the Long Short-Term Memory Network in Python</a>
+		<span class="meta">April 7, 2017</span>
+		<div class="fix"></div>
+	</li>
+		<li>
+		<a href="https://machinelearningmastery.com/regression-tutorial-keras-deep-learning-library-python/" title="Regression Tutorial with the Keras Deep Learning Library in Python"><img width="45" height="45" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/Regression-Tutorial-with-Keras-Deep-Learning-Library-in-Python-150x150.jpg" class="thumbnail wp-post-image" alt="Regression Tutorial with Keras Deep Learning Library in Python" title="Regression Tutorial with the Keras Deep Learning Library in Python"></a>		<a title="Regression Tutorial with the Keras Deep Learning Library in Python" href="https://machinelearningmastery.com/regression-tutorial-keras-deep-learning-library-python/">Regression Tutorial with the Keras Deep Learning Library in Python</a>
+		<span class="meta">June 9, 2016</span>
+		<div class="fix"></div>
+	</li>
+		<li>
+		<a href="https://machinelearningmastery.com/multi-class-classification-tutorial-keras-deep-learning-library/" title="Multi-Class Classification Tutorial with the Keras Deep Learning Library"><img width="45" height="45" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/Multi-Class-Classification-Tutorial-with-the-Keras-Deep-Learning-Library-150x150.jpg" class="thumbnail wp-post-image" alt="Multi-Class Classification Tutorial with the Keras Deep Learning Library" title="Multi-Class Classification Tutorial with the Keras Deep Learning Library"></a>		<a title="Multi-Class Classification Tutorial with the Keras Deep Learning Library" href="https://machinelearningmastery.com/multi-class-classification-tutorial-keras-deep-learning-library/">Multi-Class Classification Tutorial with the Keras Deep Learning Library</a>
+		<span class="meta">June 2, 2016</span>
+		<div class="fix"></div>
+	</li>
+		<li style="border-bottom: 0px;">
+		<a href="https://machinelearningmastery.com/grid-search-hyperparameters-deep-learning-models-python-keras/" title="How to Grid Search Hyperparameters for Deep Learning Models in Python With Keras"><img width="45" height="45" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/How-to-Grid-Search-Hyperparameters-for-Deep-Learning-Models-in-Python-With-Keras-150x150.jpg" class="thumbnail wp-post-image" alt="How to Grid Search Hyperparameters for Deep Learning Models in Python With Keras" title="How to Grid Search Hyperparameters for Deep Learning Models in Python With Keras"></a>		<a title="How to Grid Search Hyperparameters for Deep Learning Models in Python With Keras" href="https://machinelearningmastery.com/grid-search-hyperparameters-deep-learning-models-python-keras/">How to Grid Search Hyperparameters for Deep Learning Models in Python With Keras</a>
+		<span class="meta">August 9, 2016</span>
+		<div class="fix"></div>
+	</li>
+	                </ul>
+                                                                
+            </div><!-- /.boxes -->
+
+        </div><!-- /wooTabs -->
+
+        </div>         </aside><!-- /#sidebar -->
+
+		</div><!-- /#main-sidebar-container -->         
+
+		
+    </div><!-- /#content -->
+	
+	<footer id="footer" class="col-full">
+
+		
+		<div id="copyright" class="col-left">
+			<p>© 2018 Machine Learning Mastery. All Rights Reserved. </p>		</div>
+
+		<div id="credit" class="col-right">
+			<p></p><p>
+<a href="https://machinelearningmastery.com/privacy/">Privacy</a> | 
+<a href="https://machinelearningmastery.com/contact/">Contact</a> |
+<a href="https://machinelearningmastery.com/about/">About</a>
+</p><p></p>		</div>
+
+	</footer>
+
+	
+	</div><!-- /#inner-wrapper -->
+
+</div><!-- /#wrapper -->
+
+<div class="fix"></div><!--/.fix-->
+
+<!-- Drip -->
+<script type="text/javascript">
+  var _dcq = _dcq || [];
+  var _dcs = _dcs || {}; 
+  _dcs.account = '9556588';
+  
+  (function() {
+    var dc = document.createElement('script');
+    dc.type = 'text/javascript'; dc.async = true; 
+    dc.src = '//tag.getdrip.com/9556588.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(dc, s);
+  })();
+</script><!-- Woo Tabs Widget -->
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	// UL = .wooTabs
+	// Tab contents = .inside
+
+	var tag_cloud_class = '#tagcloud';
+
+	//Fix for tag clouds - unexpected height before .hide()
+	var tag_cloud_height = jQuery( '#tagcloud').height();
+
+	jQuery( '.inside ul li:last-child').css( 'border-bottom','0px' ); // remove last border-bottom from list in tab content
+	jQuery( '.wooTabs').each(function(){
+		jQuery(this).children( 'li').children( 'a:first').addClass( 'selected' ); // Add .selected class to first tab on load
+	});
+	jQuery( '.inside > *').hide();
+	jQuery( '.inside > *:first-child').show();
+
+	jQuery( '.wooTabs li a').click(function(evt){ // Init Click funtion on Tabs
+
+		var clicked_tab_ref = jQuery(this).attr( 'href' ); // Strore Href value
+
+		jQuery(this).parent().parent().children( 'li').children( 'a').removeClass( 'selected' ); //Remove selected from all tabs
+		jQuery(this).addClass( 'selected' );
+		jQuery(this).parent().parent().parent().children( '.inside').children( '*').hide();
+
+		jQuery( '.inside ' + clicked_tab_ref).fadeIn(500);
+
+		 evt.preventDefault();
+
+	})
+})
+</script>
+<script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/comment-reply.min.js.download"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"https:\/\/machinelearningmastery.com\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"recaptcha":{"messages":{"empty":"Please verify that you are not a robot."}},"cached":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/scripts.js.download"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var frontend_ajax_object = {"ajax_url":"https:\/\/machinelearningmastery.com\/wp-admin\/admin-ajax.php","ajax_nonce":"7be564c0ed"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/frontend.js.download"></script>
+<script type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/wp-embed.min.js.download"></script>
+<script async="async" type="text/javascript" src="./Naive Bayes for Machine Learning - Machine Learning Mastery_files/form.js.download"></script>
+
+<div class="drip-tab-container">
+  <div id="drip-2211" class="drip-tab bottom right no-image">
+    <div id="drip-header-2211" class="drip-header drip-hidden">
+      <a href="https://machinelearningmastery.com/naive-bayes-for-machine-learning/#" id="drip-toggle-2211" class="drip-toggle">
+        <h2 id="drip-teaser-2211">Get Your Start in Machine Learning</h2>
+        <span id="drip-tab-up-2211" class="drip-arrow up">
+          <svg width="12px" height="8px" viewBox="1362 659 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <polygon id="right_angle" stroke="none" fill="#FFFFFF" fill-rule="evenodd" transform="translate(1368.000000, 662.703125) rotate(-90.000000) translate(-1368.000000, -662.703125) " points="1364.29688 667.296875 1368.89062 662.703125 1364.29688 658.109375 1365.70312 656.703125 1371.70312 662.703125 1365.70312 668.703125"></polygon>
+          </svg>
+        </span>
+        <span id="drip-tab-down-2211" class="drip-arrow down" style="display: none"></span>
+      </a>
+    </div>
+
+    <div id="drip-content-2211" class="drip-content drip-clearfix" style="height: auto; bottom: 0px;">
+      <div id="drip-form-panel-2211" class="drip-panel" style="display: block;">
+        <a id="drip-close-2211" class="drip-close">×</a>
+        <h3 id="drip-content-header-2211">Get Your Start in Machine Learning</h3>
+        <div id="drip-scroll-2211" class="drip-scroll">
+          <div class="drip-clearfix">
+            
+            <div class="drip-description">You can master applied Machine Learning&nbsp;<br>
+<strong>without the math or fancy degree</strong>.<br>
+Find out how in this <em>free</em>&nbsp;and <em>practical</em> email course.</div>
+          </div>
+          <form id="drip-form-2211">
+            <div style="display: none">
+              <input type="hidden" name="form_id" value="2211">
+            </div>
+            <dl class="no-labels">
+              
+                <dt>Email Address</dt>
+                <dd class="drip-clearfix">
+                  
+                    <input type="email" name="fields[email]" value="" placeholder="Email Address" class="drip-text-field">
+                    <div id="drip-errors-for-email-2211" class="drip-errors"></div>
+                  
+                </dd>
+              
+            </dl>
+            <div class="form-controls">
+              <input type="submit" name="submit" value="Start My Email Course" id="drip-submit-2211" class="drip-submit-button">
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div id="drip-success-panel-2211" class="drip-success drip-panel drip-clearfix" style="display: none">
+        <a id="drip-hide-2211" class="drip-close">×</a>
+        <h3>Thank you for signing up!</h3>
+        <p class="drip-description">Please check your email and click the link provided to confirm your subscription.</p>
+      </div>
+
+      
+    </div>
+  </div>
+</div></body></html>
