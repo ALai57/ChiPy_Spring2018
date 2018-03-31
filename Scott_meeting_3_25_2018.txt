@@ -1,0 +1,53 @@
+
+
+1) Query, ingest, load - (JN 1)
+2) Preprocessing - (JN 2)
+3) Train Test Split + Modeling - 
+
+Preprocessor as a class to store... mean, etc
+
+Start with goals for notebook
+
+
+pip installable ("extensions")
+
+Table of contents
+
+Python have something like R studio? Just started
+Jupyter lab - notebook extension with TOC - Scratchpad
+
+Develop packages for a team
+
+Sample data set sampled down to 100 data points or so....
+
+Start with Logistic Regression
+Random forest predicts better, because of non-linear behavior
+
+Genie Index - how atoms order in a crystal lattice
+
+Random forest - feature importance
+Do I need to take these out of the dataset?
+
+Numpy vectors for lin alg only - pass data frames to the actual function
+Fine to pass pandas data frames
+
+Confusion matrices
+Box example - 1,0 0,1 -- most often care about the ones you get WRONG - 
+
+
+Look into why the import didn't work???
+
+INstall library to view Jupyter
+
+AUTORELOAD - look into this
+PDB - look into this
+
+Use PDB with scratchpad
+
+My goals:
+implement ridge regression
+Categorical to continuous regression...? 
+
+Demonstrate that I can replicate code in SKlearn
+Try to build a cool UI out of these...
+
