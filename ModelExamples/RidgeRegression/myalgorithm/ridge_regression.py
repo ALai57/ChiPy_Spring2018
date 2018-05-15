@@ -1,6 +1,7 @@
 
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 def ridge_regression(X, Y, lmbda=0.1):
     XtX_inv = np.linalg.inv(X.T.dot(X) + lmbda*np.eye(X.shape[1]))
@@ -60,37 +61,7 @@ class RidgeRegression:
             # if isinstance(X, pd.DataFrame):
             #     self.beta = np.ravel(self.beta)
 
-        elif self.opt == 'sgd_single':
-            self.beta = np.zeros(X.shape[1])
-
-            p1 = []
-            p2 = []
-
-            for epoch in np.arange(0, self.n_epochs):
-
-                for i, xi in enumerate(X):
-                    # print(i, xi)
-
-                    pt1 = (1-2*self.penalty*self.lr)*self.beta
-
-                    err = y[i] - np.dot(xi, self.beta)
-                    # print( 'y = {}. err = {}'.format(y[i], err) )
-                    # print( 'Error shape = {}'.format(err.shape) )
-
-
-                    # print(i)
-                    pt2 = 2*self.lr*xi*err
-
-                    self.beta = pt1 + pt2
-
-                    # p1.append(pt1)
-                    # p2.append(pt2)
-
-                    # import pdb; pdb.set_trace()
-                    if self.beta[0] != self.beta[0]:
-                        import pdb; pdb.set_trace()
-
-        elif self.opt == 'sgd_test':
+        elif self.opt == 'gradient_descent':
             self.beta = np.array( np.zeros( (X.shape[1],1) ) )
             self.beta[0] = -2
             self.beta[1] = -3
@@ -141,6 +112,51 @@ class RidgeRegression:
                 # import pdb; pdb.set_trace()
                 if self.beta[0] != self.beta[0]:
                     import pdb; pdb.set_trace()
+
+        elif self.opt == 'sgd':
+            self.beta = np.array( np.zeros( (X.shape[1],1) ) )
+            self.beta[0] = -2
+            self.beta[1] = -3
+
+            self.J = np.empty(self.n_epochs*len(y))
+            self.beta_history = np.empty([self.beta.shape[0], self.n_epochs*len(y)])
+
+            g = []
+            g_num = []
+
+            h = 0.001
+
+            for epoch in tqdm(np.arange(0, self.n_epochs)):
+
+                #Shuffle datasets
+                neworder = np.random.permutation(len(y))
+                X = X[neworder]
+                y = y[neworder]
+
+                for i in np.arange(0, len(y)):
+
+                    # Penalizing the size of the beta terms
+                    pt1 = -2*self.penalty*self.beta
+
+                    grad = -np.dot(np.dot(X[[i]].T, X[[i]]), self.beta) - np.dot(X[[i]].T, y[[i]])
+                    grad_num = calc_grad(X[[i]], y[[i]], self.beta, h)
+                    g.append(grad)
+                    g_num.append(grad_num)
+
+                    # Penalizing the errors
+                    pt2 = - self.lr*grad_num
+
+
+                    self.beta = self.beta + pt1 + pt2/X.shape[0]
+
+                    # import pdb; pdb.set_trace()
+                    iter = i + len(y)*epoch
+                    self.J[iter] = calc_cost(X, y, self.beta).squeeze()
+                    self.beta_history[:,iter] = self.beta.squeeze()
+
+                    # import pdb; pdb.set_trace()
+                    if self.beta[0] != self.beta[0]:
+                        import pdb; pdb.set_trace()
 
 
     def predict(self, X):
