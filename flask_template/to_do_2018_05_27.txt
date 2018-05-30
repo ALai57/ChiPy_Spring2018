@@ -1,0 +1,12 @@
+Text numerical datetime
+categorical
+integer vs floating point
+uint8
+Boolean
+
+Post route in Flask
+n1,n2,n3
+
+requests - send post request from Jupyter to hit the service
+
+Front end -> microservice - return data and interactive rendering
